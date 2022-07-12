@@ -16,7 +16,7 @@ settings:
   - name: TF_VERSION
     value: 1.0
 modules:
-  - name: lab-vpc
+  - name: vpc
     layer: VPC
     source:
       git: 
@@ -30,8 +30,13 @@ modules:
         value: $blueprint.vpc_region
       - name: resource_group_name
         value: $blueprint.resource_group_name
-  - name: cos-instance
-    layer: DB
+    outputs:
+      - name: vpc_id
+      - name: frontend_subnet_id
+      - name: backend_subnet_id
+      - name: vpc
+  - name: cos
+    layer: COS
     source:
       git:
         source_type: github
@@ -43,7 +48,31 @@ modules:
       - name: vpc_region
         value: $blueprint.vpc_region
       - name: resource_group_id
-        value: $blueprint.resource_group_name
+        value: $workitem.vpc.outputs.resource_group_id
     outputs:
       - name: cos_id
-      - name: cos_crn
+      - name: backend_collector_bucket
+      - name: frontend_collector_bucket
+
+  - name: flowlogs
+    layer: Metrics
+    source:
+      git:
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/collector"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: resource_group_id
+        value: $workitem.vpc.outputs.resource_group_id
+      - name: frontend_subnet_id
+        value: $workitem.vpc.outputs.frontend_subnet_id
+      - name: backend_subnet_id
+        value: $workitem.vpc.outputs.backend_subnet_id
+      - name: backend_collector_bucket
+        value: $workitem.cos.outputs.backend_collector_bucket       
+      - name: frontend_collector_bucket
+        value: $workitem.cos.outputs.frontend_collector_bucket 
