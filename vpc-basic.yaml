@@ -1,0 +1,32 @@
+name: "Basic VPC Example"
+schema_version: "1.0.0"
+description: "Simple two module Vpc blueprint. Deploys VPC resources and COS bucket"
+inputs:
+  - name: resource_group_name
+  - name: vpc_region
+  - name: cos_instance_name
+  - name: create_bastion
+  - name: name
+outputs:
+  - name: cos_id
+    value: $module.cos-storage.outputs.cos_id
+  - name: vpc_id
+    value: $module.vpc.outputs.vpc_id
+settings:
+  - name: TF_VERSION
+    value: 1.0
+modules:
+  - name: lab-vpc
+    layer: vpc
+    source:
+      git: 
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/vpc"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: resource_group_name
+        value: $blueprint.resource_group_name

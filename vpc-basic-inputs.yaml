@@ -1,0 +1,13 @@
+# Resource parameters
+resource_group_name: 
+
+# Region for VPC region
+vpc_region: 
+
+# COS parameters
+cos_instance_name: 
+
+
+create_bastion: 
+
+name: 
