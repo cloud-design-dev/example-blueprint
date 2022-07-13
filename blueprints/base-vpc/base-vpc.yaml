@@ -57,7 +57,7 @@ modules:
     source:
       git:
         source_type: github
-        git_repo_url: "https://github.com/we-work-in-the-cloud/terraform-ibm-vpc-bastion"
+        git_repo_url: "https://github.com/we-work-in-the-cloud/terraform-ibm-vpc-bastion/tree/master"
         git_branch: master
     inputs:
       - name: name
