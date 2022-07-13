@@ -9,9 +9,9 @@ inputs:
   - name: ssh_key_name
 outputs:
   - name: cos_id
-    value: $module.v1-bplab-cos-workspace.outputs.cos_id
+    value: $module.bp-cos-workspace.outputs.cos_id
   - name: vpc_id
-    value: $module.v1-bplab-vpc-workspace.outputs.vpc_id
+    value: $module.bp-vpc-workspace.outputs.vpc_id
 settings:
   - name: TF_VERSION
     value: 1.0
@@ -98,7 +98,7 @@ modules:
       - name: frontend_subnet_id
         value: $module.bp-vpc-workspace.outputs.frontend_subnet_id
       - name: backend_subnet_id
-        value: $workitem.bp-vpc-workspace-workspace.outputs.backend_subnet_id
+        value: $workitem.bp-vpc-workspace.outputs.backend_subnet_id
       - name: backend_collector_bucket
         value: $workitem.bp-cos-workspace.outputs.backend_collector_bucket       
       - name: frontend_collector_bucket
