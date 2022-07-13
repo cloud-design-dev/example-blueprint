@@ -21,7 +21,7 @@ modules:
     source:
       git: 
         source_type: github
-        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint/tree/main/modules/vpc"
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/vpc"
         git_branch: main
     inputs:
       - name: name
@@ -42,7 +42,7 @@ modules:
     source:
       git:
         source_type: github
-        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint/tree/main/modules/cos"
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/cos"
         git_branch: main
     inputs:
       - name: name
