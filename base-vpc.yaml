@@ -16,7 +16,7 @@ settings:
   - name: TF_VERSION
     value: 1.0
 modules:
-  - name: v1-bplab-vpc-workspace
+  - name: bp-vpc-workspace
     layer: network
     source:
       git: 
@@ -37,7 +37,7 @@ modules:
       - name: frontend_subnet_id
       - name: backend_subnet_id
       - name: ssh_key_id
-  - name: v1-bplab-cos-workspace
+  - name: bp-cos-workspace
     layer: storage
     source:
       git:
