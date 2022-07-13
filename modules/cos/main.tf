@@ -22,17 +22,17 @@ resource "ibm_cos_bucket" "backend" {
 }
 
 resource "ibm_iam_authorization_policy" "image" {
-  source_service_name  = "is"
-  source_resource_type = "image"
-  target_service_name  = "cloud-object-storage"
-  target_resource_instance_id = ibm_resource_instance.cos_instance.id
-  roles                = ["Reader"]
+  source_service_name         = "is"
+  source_resource_type        = "image"
+  target_service_name         = "cloud-object-storage"
+  target_resource_instance_id = ibm_resource_instance.cos_instance.guid
+  roles                       = ["Reader"]
 }
 
 resource "ibm_iam_authorization_policy" "collector" {
-  source_service_name  = "is"
-  source_resource_type = "flow-log-collector"
-  target_service_name  = "cloud-object-storage"
-  target_resource_instance_id = ibm_resource_instance.cos_instance.id
-  roles                = ["Writer"]
+  source_service_name         = "is"
+  source_resource_type        = "flow-log-collector"
+  target_service_name         = "cloud-object-storage"
+  target_resource_instance_id = ibm_resource_instance.cos_instance.guid
+  roles                       = ["Writer", "Reader"]
 }

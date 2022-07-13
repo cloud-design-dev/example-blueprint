@@ -1,0 +1,11 @@
+# Resource parameters
+resource_group_name: 
+
+# Region for VPC resources
+vpc_region: 
+
+# Base VPC name
+name: 
+
+# IP or CIDR allowed to access bastion via SSH
+allow_ssh_from: 
