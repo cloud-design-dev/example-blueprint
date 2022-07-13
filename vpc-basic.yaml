@@ -9,14 +9,14 @@ inputs:
   - name: name
 outputs:
   - name: cos_id
-    value: $module.bp-rt-v2-cos-workspace.outputs.cos_id
+    value: $module.bp-rt-v3-cos-workspace.outputs.cos_id
   - name: vpc_id
-    value: $module.bp-rt-v2-vpc-workspace.outputs.vpc_id
+    value: $module.bp-rt-v3-vpc-workspace.outputs.vpc_id
 settings:
   - name: TF_VERSION
     value: 1.0
 modules:
-  - name: bp-rt-v2-vpc-workspace
+  - name: "${blueprint.name}-vpc-workspace"
     layer: VPC
     source:
       git: 
@@ -35,7 +35,7 @@ modules:
       - name: frontend_subnet_id
       - name: backend_subnet_id
       - name: vpc
-  - name: bp-rt-v2-cos-workspace
+  - name: bp-rt-v3-cos-workspace
     layer: COS
     source:
       git:
@@ -46,7 +46,7 @@ modules:
       - name: name
         value: $blueprint.name
       - name: resource_group_id
-        value: $workitem.bp-rt-v2-vpc-workspace.outputs.resource_group_id
+        value: $workitem.${blueprint.name}-vpc-workspace.outputs.resource_group_id
       - name: vpc_region
         value: $blueprint.vpc_region
     outputs:
@@ -54,7 +54,7 @@ modules:
       - name: backend_collector_bucket
       - name: frontend_collector_bucket
 
-  - name: bp-rt-v2-flowlogs-workspace
+  - name: bp-rt-v3-flowlogs-workspace
     layer: Metrics
     source:
       git:
@@ -64,15 +64,13 @@ modules:
     inputs:
       - name: name
         value: $blueprint.name
-      - name: vpc_region
-        value: $blueprint.vpc_region
       - name:  resource_group_id
-        value: $workitem.bp-rt-v2-vpc-workspace.outputs.resource_group_id
+        value: $workitem.bp-rt-v3-vpc-workspace.outputs.resource_group_id
       - name: frontend_subnet_id
-        value: $workitem.bp-rt-v2-vpc-workspace.outputs.frontend_subnet_id
+        value: $module.bp-rt-v3-vpc-workspace.outputs.frontend_subnet_id
       - name: backend_subnet_id
-        value: $workitem.bp-rt-v2-vpc-workspace.outputs.backend_subnet_id
+        value: $workitem.bp-rt-v3-vpc-workspace.outputs.backend_subnet_id
       - name: backend_collector_bucket
-        value: $workitem.bp-rt-v2-cos-workspace.outputs.backend_collector_bucket       
+        value: $workitem.bp-rt-v3-cos-workspace.outputs.backend_collector_bucket       
       - name: frontend_collector_bucket
-        value: $workitem.bp-rt-v2-cos-workspace.outputs.frontend_collector_bucket 
+        value: $workitem.bp-rt-v3-cos-workspace.outputs.frontend_collector_bucket 
