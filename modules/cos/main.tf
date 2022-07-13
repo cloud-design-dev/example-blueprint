@@ -20,3 +20,19 @@ resource "ibm_cos_bucket" "backend" {
   region_location      = var.vpc_region
   storage_class        = var.cos_storage_class
 }
+
+resource "ibm_iam_authorization_policy" "image" {
+  source_service_name  = "is"
+  source_resource_type = "image"
+  target_service_name  = "cloud-object-storage"
+  target_resource_instance_id = ibm_resource_instance.cos_instance.id
+  roles                = ["Reader"]
+}
+
+resource "ibm_iam_authorization_policy" "collector" {
+  source_service_name  = "is"
+  source_resource_type = "flow-log-collector"
+  target_service_name  = "cloud-object-storage"
+  target_resource_instance_id = ibm_resource_instance.cos_instance.id
+  roles                = ["Writer"]
+}
