@@ -25,3 +25,7 @@ output "vpc" {
 output "resource_group_id" {
   value = data.ibm_resource_group.group.id
 }
+
+output "ssh_key_id" {
+  value = data.ibm_is_ssh_key.regional.id
+}

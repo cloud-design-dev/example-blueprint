@@ -9,3 +9,5 @@ name:
 
 # IP or CIDR allowed to access bastion via SSH
 allow_ssh_from: 
+
+ssh_key_name:

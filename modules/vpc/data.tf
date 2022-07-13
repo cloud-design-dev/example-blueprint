@@ -7,3 +7,7 @@ data "ibm_resource_group" "group" {
 data "ibm_is_zones" "region" {
   region = var.vpc_region
 }
+
+data "ibm_is_ssh_key" "regional" {
+  name = var.ssh_key_name
+}

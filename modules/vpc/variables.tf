@@ -18,3 +18,8 @@ variable "vpc_region" {
   description = "The IBM Cloud Region where the VPC and associated resources will be deployed."
   type        = string
 }
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key to use for the VPC."
+  type        = string
+}
