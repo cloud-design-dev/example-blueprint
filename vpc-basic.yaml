@@ -16,7 +16,7 @@ settings:
   - name: TF_VERSION
     value: 1.0
 modules:
-  - name: "${blueprint.name}-vpc"
+  - name: bp-rt-v2-vpc-workspace
     layer: VPC
     source:
       git: 
@@ -35,7 +35,7 @@ modules:
       - name: frontend_subnet_id
       - name: backend_subnet_id
       - name: vpc
-  - name: "${blueprint.name}-cos"
+  - name: bp-rt-v2-cos-workspace
     layer: COS
     source:
       git:
@@ -54,7 +54,7 @@ modules:
       - name: backend_collector_bucket
       - name: frontend_collector_bucket
 
-  - name: bp-flowlogs-workspace
+  - name: bp-rt-v2-flowlogs-workspace
     layer: Metrics
     source:
       git:
