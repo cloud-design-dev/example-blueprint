@@ -16,7 +16,7 @@ settings:
   - name: TF_VERSION
     value: 1.0
 modules:
-  - name: vpc
+  - name: "${blueprint.name}-vpc"
     layer: VPC
     source:
       git: 
@@ -35,7 +35,7 @@ modules:
       - name: frontend_subnet_id
       - name: backend_subnet_id
       - name: vpc
-  - name: cos
+  - name: "${blueprint.name}-cos"
     layer: COS
     source:
       git:
@@ -45,16 +45,16 @@ modules:
     inputs:
       - name: name
         value: $blueprint.name
-      - name: vpc_region
-        value: $blueprint.vpc_region
       - name: resource_group_id
         value: $workitem.vpc.outputs.resource_group_id
+      - name: vpc_region
+        value: $blueprint.vpc_region
     outputs:
       - name: cos_id
       - name: backend_collector_bucket
       - name: frontend_collector_bucket
 
-  - name: flowlogs
+  - name: bp-flowlogs-workspace
     layer: Metrics
     source:
       git:
@@ -66,7 +66,7 @@ modules:
         value: $blueprint.name
       - name: vpc_region
         value: $blueprint.vpc_region
-      - name: resource_group_id
+      - name:  resource_group_id
         value: $workitem.vpc.outputs.resource_group_id
       - name: frontend_subnet_id
         value: $workitem.vpc.outputs.frontend_subnet_id
