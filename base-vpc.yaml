@@ -9,7 +9,7 @@ inputs:
   - name: ssh_key_name
 outputs:
   - name: cos_id
-    value: $module.-cos-workspace.outputs.cos_id
+    value: $module.bp-cos-workspace.outputs.cos_id
   - name: vpc_id
     value: $module.bp-vpc-workspace.outputs.vpc_id
 settings:
