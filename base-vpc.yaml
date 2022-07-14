@@ -77,7 +77,7 @@ modules:
         value: $workitem.bp-vpc-workspace.outputs.frontend_subnet_id
       - name: ssh_key_ids
         value: $workitem.bp-vpc-workspace.outputs.ssh_key_id
-        type: string
+        type: list(string)
       - name: vpc_id
         value: $workitem.bp-vpc-workspace.outputs.vpc_id
     outputs:
