@@ -83,7 +83,7 @@ modules:
     outputs:
       - name: bastion_public_ip
       - name: bastion_maintenance_group_id
-  - name: v1-bplab-flowlogs-workspace
+  - name: bp-flowlogs-workspace
     layer: observability
     source:
       git:
