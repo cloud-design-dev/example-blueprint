@@ -1,13 +1,13 @@
 # Resource parameters
-resource_group_name: 
+resource_group_name: Default 
 
 # Region for VPC resources
-vpc_region: 
+vpc_region: us-south
 
 # Base VPC name
-name: 
+name: bp-base
 
 # IP or CIDR allowed to access bastion via SSH
-allow_ssh_from: 
+allow_ssh_from: "0.0.0.0/0"
 
-ssh_key_name:
+ssh_key_name: rt-us-south-europa
