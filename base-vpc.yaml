@@ -32,11 +32,15 @@ modules:
         value: $blueprint.resource_group_name
       - name: ssh_key_name
         value: $blueprint.ssh_key_name
+      - name: allow_ssh_from
+        value: $blueprint.allow_ssh_from
     outputs:
       - name: vpc_id
       - name: frontend_subnet_id
       - name: backend_subnet_id
       - name: ssh_key_id
+      - name: bastion_public_ip
+      - name: bastion_maintenance_group_id
   - name: bp-cos-workspace
     layer: storage
     source:
@@ -55,34 +59,6 @@ modules:
       - name: cos_id
       - name: backend_collector_bucket
       - name: frontend_collector_bucket
-  - name: "${$blueprint.name}-bastion-ws"
-    layer: compute
-    source:
-      git:
-        source_type: github
-        git_repo_url: "https://github.com/we-work-in-the-cloud/terraform-ibm-vpc-bastion/tree/master"
-        git_branch: master
-    inputs:
-      - name: name
-        value: $blueprint.name
-      - name: resource_group_id
-        value: $workitem.bp-vpc-workspace.outputs.resource_group_id
-      - name: vpc_region
-        value: $blueprint.vpc_region
-      - name: allow_ssh_from
-        value: $blueprint.allow_ssh_from
-      - name: create_public_ip
-        value: true
-      - name: subnet_id
-        value: $workitem.bp-vpc-workspace.outputs.frontend_subnet_id
-      - name: ssh_key_ids
-        value: $module.bp-vpc-workspace.outputs.ssh_key_id
-        type: list(string)
-      - name: vpc_id
-        value: $workitem.bp-vpc-workspace.outputs.vpc_id
-    outputs:
-      - name: bastion_public_ip
-      - name: bastion_maintenance_group_id
   - name: bp-flowlogs-workspace
     layer: observability
     source:
