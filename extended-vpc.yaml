@@ -1,0 +1,120 @@
+name: "Extended VPC Example"
+schema_version: "1.0.0"
+description: "Deploys VPC resources, COS bucket, flowlogs collectors, and a bastion host"
+inputs:
+  - name: resource_group_name
+  - name: vpc_region
+  - name: allow_ssh_from
+  - name: name
+  - name: ssh_key_name
+outputs:
+  - name: cos_id
+    value: $module.bp-cos-workspace.outputs.cos_id
+  - name: vpc_id
+    value: $module.bp-vpc-workspace.outputs.vpc_id
+settings:
+  - name: TF_VERSION
+    value: 1.0
+modules:
+  - name: bp-vpc-workspace
+    layer: network
+    source:
+      git: 
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/vpc"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: resource_group_name
+        value: $blueprint.resource_group_name
+      - name: ssh_key_name
+        value: $blueprint.ssh_key_name
+      - name: allow_ssh_from
+        value: $blueprint.allow_ssh_from
+    outputs:
+      - name: vpc_id
+      - name: deployment_zone
+      - name: backend_subnet_id
+      - name: bastion_public_ip
+      - name: bastion_maintenance_group_id
+  - name: bp-cos-workspace
+    layer: storage
+    source:
+      git:
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/cos"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name: resource_group_id
+        value: $workitem.bp-vpc-workspace.outputs.resource_group_id
+      - name: vpc_region
+        value: $blueprint.vpc_region
+    outputs:
+      - name: cos_id
+      - name: backend_collector_bucket
+      - name: frontend_collector_bucket
+  - name: bp-flowlogs-workspace
+    layer: observability
+    source:
+      git:
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/collector"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name:  resource_group_id
+        value: $workitem.bp-vpc-workspace.outputs.resource_group_id
+      - name: frontend_subnet_id
+        value: $module.bp-vpc-workspace.outputs.frontend_subnet_id
+      - name: backend_subnet_id
+        value: $workitem.bp-vpc-workspace.outputs.backend_subnet_id
+      - name: backend_collector_bucket
+        value: $workitem.bp-cos-workspace.outputs.backend_collector_bucket       
+      - name: frontend_collector_bucket
+        value: $workitem.bp-cos-workspace.outputs.frontend_collector_bucket 
+  - name: bp-observability-workspace
+    layer: observability
+    source:
+      git:
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/observability"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name:  resource_group_id
+        value: $workitem.bp-vpc-workspace.outputs.resource_group_id
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: enable_platform_metrics
+        value: true
+  - name: bp-cluster-workspace
+    layer: compute
+    source:
+      git:
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/example-blueprint-modules/tree/main/hashistack-cluster"
+        git_branch: main
+    inputs:
+      - name: name
+        value: $blueprint.name
+      - name:  resource_group_id
+        value: $workitem.bp-vpc-workspace.outputs.resource_group_id
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: subnet_id
+        value: $workitem.bp-vpc-workspace.outputs.backend_subnet_id
+      - name: bastion_maintenance_group_id
+        value: $workitem.bp-vpc-workspace.outputs.bastion_maintenance_group_id
+      - name: ssh_key_name
+        value: $blueprint.ssh_key_name
+      - name: deployment_zone
+        value: $workitem.bp-vpc-workspace.outputs.deployment_zone
+      - name: vpc_id
+        value: $workitem.bp-vpc-workspace.outputs.vpc_id
