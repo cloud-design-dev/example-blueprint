@@ -55,7 +55,7 @@ modules:
       - name: cos_id
       - name: backend_collector_bucket
       - name: frontend_collector_bucket
-  - name: bp-bastion-workspace
+  - name: "${$blueprint.name}-bastion-ws"
     layer: compute
     source:
       git:
@@ -77,7 +77,7 @@ modules:
         value: $workitem.bp-vpc-workspace.outputs.frontend_subnet_id
       - name: ssh_key_ids
         value: $module.bp-vpc-workspace.outputs.ssh_key_id
-        # type: list(string)
+        type: list(string)
       - name: vpc_id
         value: $workitem.bp-vpc-workspace.outputs.vpc_id
     outputs:

@@ -5,7 +5,7 @@ resource_group_name: "Default"
 vpc_region: "us-south"
 
 # Base VPC name
-name: "bp-base"
+name: "bp-base-v1"
 
 # IP or CIDR allowed to access bastion via SSH
 allow_ssh_from: "136.244.50.59"
