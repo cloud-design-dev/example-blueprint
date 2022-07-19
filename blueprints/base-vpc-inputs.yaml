@@ -1,0 +1,10 @@
+# Resource parameters
+resource_group_name: "Default" 
+
+# Region for VPC resources
+vpc_region: "us-south"
+
+# Base VPC name
+prefix: "simple-v1"
+
+provision_resource_group: "false"

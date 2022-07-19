@@ -1,0 +1,47 @@
+name: "Basic VPC Example"
+schema_version: "1.0.0"
+description: "Deploys VPC resources, COS bucket, flowlogs collectors, and a bastion host"
+inputs:
+  - name: resource_group_name
+  - name: vpc_region
+  - name: prefix
+  - name: provision_resource_group
+outputs:
+  - name: vpc_id
+    value: $module.simple-vpc-workspace.outputs.vpc_id
+settings:
+  - name: TF_VERSION
+    value: 1.0
+modules:
+  - name: resource_group
+    layer: RG
+    source:
+      git: 
+        source_type: github
+        git_repo_url: "https://github.com/Cloud-Schematics/blueprint-example-modules/tree/main/IBM-ResourceGroup"
+        git_branch: main
+    inputs:
+      - name: provision
+        value: $blueprint.provision_resource_group
+      - name: name
+        value: $blueprint.resource_group_name
+    outputs:
+      - name: resource_group_name
+      - name: resource_group_id
+  - name: simple-vpc-workspace
+    layer: network
+    source:
+      git: 
+        source_type: github
+        git_repo_url: "https://github.com/cloud-design-dev/IBM-Cloud-VPC-Module"
+        git_branch: main
+    inputs:
+      - name: prefix
+        value: $blueprint.prefix
+      - name: vpc_region
+        value: $blueprint.vpc_region
+      - name: resource_group_id
+        value: $module.resource_group.outputs.resource_group_id
+    outputs:
+      - name: vpc_id
+ 
