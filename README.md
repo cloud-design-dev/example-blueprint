@@ -1,1 +1,5 @@
 # example-blueprint
+
+## Components
+
+The blueprint defines the required variable inputs for each component (workspace) to deploy the associated Terraform config. It also defines the outputs the component is expected to return that will be required as input to other components. For example, the Accounts component may create a Resource Group and return the Resource Group ID as required by the VPC and Cluster components. The blueprint maps this output from the Accounts component to the inputs of the VPC and Cluster components. From the data links between components, Schematics creates a dependency map, with a Directed Acyclic Graph (DAG) determining the order of component (workspace) execution. Similar to Terraform operation, the DAG driven execution ensures that components (workspaces) that depend on resources created by other components, are executed after the data outputs become available. In this example, the Account component (workspace) is deployed first, followed by VPC and then the Cluster component.
